@@ -52,12 +52,6 @@ jobs:
         tf_actions_version: 0.14.8
         tf_actions_subcommand: 'plan'
         tf_actions_working_dir: "./Azure-terraform/1Pub-3Prvt-Vnet-Multi"
-      env:
-        EnvironmentLevel: ${{ env.EnvironmentLevel }} 
-        AzureSubscriptionAlias: ${{ env.AzureSubscriptionAlias }} 
-        VNetName: ${{ env.VNetName }} 
-        location: ${{ env.location }} 
-        resourcegroupname: ${{ env.resourcegroupname }} 
     
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main'
@@ -66,9 +60,3 @@ jobs:
         tf_actions_version: 0.14.8
         tf_actions_subcommand: 'apply'
         tf_actions_working_dir: "./terraform"
-      env:
-       EnvironmentLevel: ${{ env.EnvironmentLevel }} 
-       AzureSubscriptionAlias: ${{ env.AzureSubscriptionAlias }} 
-       VNetName: ${{ env.VNetName }} 
-       location: ${{ env.location }} 
-       resourcegroupname: ${{ env.resourcegroupname }} 
