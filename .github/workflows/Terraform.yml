@@ -60,7 +60,7 @@ jobs:
       with:
         tf_actions_version: 0.14.8
         tf_actions_subcommand: 'apply'
-        tf_actions_working_dir: "./terraform"
+        tf_actions_working_dir: "./Azure-terraform/1Pub-3Prvt-Vnet-Multi"
         tf_actions_additional_args: |
           -var "EnvironmentLevel=Dev"
           -var "AzureSubscriptionAlias=DZTechAZureCore"
