@@ -1,11 +1,11 @@
 name: 'Terraform'
- 
+
 on:
   push:
     branches:
-    - main
+      - main
   pull_request:
- 
+
 jobs:
   terraform:
     name: 'Terraform'
@@ -18,57 +18,48 @@ jobs:
       AzureSubscriptionAlias: 'DZTechAZureCore'
       VNetName: 'CloudLandingVnet'
       location: 'eastus'
-      resourcegroupname: 'Developers'
+      resourcegroupname: 'Developers'      
+
     runs-on: ubuntu-latest
     environment: production
- 
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+
+    # Use the Bash shell regardless of the runner platform
     defaults:
       run:
         shell: bash
- 
+
     steps:
-    # Checkout the repository to the GitHub Actions runner
-    - name: Checkout
-      uses: actions/checkout@v2
-         
-    - name: 'Terraform Init'
-      uses: hashicorp/terraform-github-actions@master
-      with:
-        tf_actions_version: 0.14.8
-        tf_actions_subcommand: 'init'
-        tf_actions_working_dir: "./Azure-terraform/1Pub-3Prvt-Vnet-Multi"
- 
-    - name: 'Terraform Validate'
-      uses: hashicorp/terraform-github-actions@master
-      with:
-        tf_actions_version: 0.14.8
-        tf_actions_subcommand: 'validate'
-        tf_actions_working_dir: "./Azure-terraform/1Pub-3Prvt-Vnet-Multi"
-         
-    - name: 'Terraform Plan'
-      uses: hashicorp/terraform-github-actions@master
-      with:
-        tf_actions_version: 0.14.8
-        tf_actions_subcommand: 'plan'
-        tf_actions_working_dir: "./Azure-terraform/1Pub-3Prvt-Vnet-Multi"
-        tf_actions_additional_args: |
-            -var "EnvironmentLevel=${{ env.EnvironmentLevel }}"
-            -var "AzureSubscriptionAlias=${{ env.AzureSubscriptionAlias }}"
-            -var "VNetName=${{ env.VNetName }}"
-            -var "location=${{ env.location }}"
-            -var "resourcegroupname=${{ env.resourcegroupname }}""
-    
-    - name: Terraform Apply
-      if: github.ref == 'refs/heads/main'
-      uses: hashicorp/terraform-github-actions@master
-      with:
-        tf_actions_version: 0.14.8
-        tf_actions_subcommand: 'apply'
-        tf_actions_working_dir: "./Azure-terraform/1Pub-3Prvt-Vnet-Multi"
-        tf_actions_additional_args: |
-            -var "EnvironmentLevel=${{ env.EnvironmentLevel }}"
-            -var "AzureSubscriptionAlias=${{ env.AzureSubscriptionAlias }}"
-            -var "VNetName=${{ env.VNetName }}"
-            -var "location=${{ env.location }}"
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: 'Terraform Init'
+        run: |
+          cd Azure-terraform/1Pub-3Prvt-Vnet-Multi
+          terraform init
+
+      - name: 'Terraform Validate'
+        run: |
+          cd Azure-terraform/1Pub-3Prvt-Vnet-Multi
+          terraform validate
+
+      - name: 'Terraform Plan'
+        run: |
+          cd Azure-terraform/1Pub-3Prvt-Vnet-Multi
+          terraform plan \
+            -var "EnvironmentLevel=${{ env.EnvironmentLevel }}" \
+            -var "AzureSubscriptionAlias=${{ env.AzureSubscriptionAlias }}" \
+            -var "VNetName=${{ env.VNetName }}" \
+            -var "location=${{ env.location }}" \
+            -var "resourcegroupname=${{ env.resourcegroupname }}"
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main'
+        run: |
+          cd Azure-terraform/1Pub-3Prvt-Vnet-Multi
+          terraform apply \
+            -var "EnvironmentLevel=${{ env.EnvironmentLevel }}" \
+            -var "AzureSubscriptionAlias=${{ env.AzureSubscriptionAlias }}" \
+            -var "VNetName=${{ env.VNetName }}" \
+            -var "location=${{ env.location }}" \
             -var "resourcegroupname=${{ env.resourcegroupname }}"
