@@ -57,7 +57,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           cd Azure-terraform/1Pub-3Prvt-Vnet-Multi
-          terraform apply \
+          terraform apply -auto-approve \
             -var "EnvironmentLevel=${{ env.EnvironmentLevel }}" \
             -var "AzureSubscriptionAlias=${{ env.AzureSubscriptionAlias }}" \
             -var "VNetName=${{ env.VNetName }}" \
