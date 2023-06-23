@@ -14,6 +14,11 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+      ENVIRONMENT_LEVEL: 'Dev'
+      AZURE_SUBSCRIPTION_ALIAS: 'DZTechAZureCore'
+      VNET_NAME: 'CloudLandingVnet'
+      LOCATION: 'eastus'
+      RESOURCE_GROUP_NAME: 'Developers'
     runs-on: ubuntu-latest
     environment: production
  
@@ -48,11 +53,11 @@ jobs:
         tf_actions_subcommand: 'plan'
         tf_actions_working_dir: "./Azure-terraform/1Pub-3Prvt-Vnet-Multi"
         tf_actions_additional_args: |
-          -var "EnvironmentLevel=Dev"
-          -var "AzureSubscriptionAlias=DZTechAZureCore"
-          -var "VNetName=CloudLandingVnet"
-          -var "location=eastus"
-          -var "resourcegroupname=Developers"
+            -var "EnvironmentLevel=${{ env.ENVIRONMENT_LEVEL }}"
+            -var "AzureSubscriptionAlias=${{ env.AZURE_SUBSCRIPTION_ALIAS }}"
+            -var "VNetName=${{ env.VNET_NAME }}"
+            -var "location=${{ env.LOCATION }}"
+            -var "resourcegroupname=${{ env.RESOURCE_GROUP_NAME }}""
     
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main'
@@ -62,8 +67,8 @@ jobs:
         tf_actions_subcommand: 'apply'
         tf_actions_working_dir: "./Azure-terraform/1Pub-3Prvt-Vnet-Multi"
         tf_actions_additional_args: |
-          -var "EnvironmentLevel=Dev"
-          -var "AzureSubscriptionAlias=DZTechAZureCore"
-          -var "VNetName=CloudLandingVnet"
-          -var "location=eastus"
-          -var "resourcegroupname=Developers"
+            -var "EnvironmentLevel=${{ env.ENVIRONMENT_LEVEL }}"
+            -var "AzureSubscriptionAlias=${{ env.AZURE_SUBSCRIPTION_ALIAS }}"
+            -var "VNetName=${{ env.VNET_NAME }}"
+            -var "location=${{ env.LOCATION }}"
+            -var "resourcegroupname=${{ env.RESOURCE_GROUP_NAME }}"
