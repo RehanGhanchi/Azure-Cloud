@@ -1,11 +1,12 @@
 name: 'Terraform'
-
+ 
 on:
   push:
     branches:
       - main
   pull_request:
-
+  
+ 
 jobs:
   terraform:
     name: 'Terraform'
@@ -19,47 +20,44 @@ jobs:
       VNetName: 'CloudLandingVnet'
       location: 'eastus'
       resourcegroupname: 'Developers'      
-
+ 
     runs-on: ubuntu-latest
     environment: production
-
+ 
     # Use the Bash shell regardless of the runner platform
     defaults:
       run:
         shell: bash
-
+        working-directory: Azure-terraform/1Pub-3Prvt-Vnet-Multi
+ 
     steps:
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout
         uses: actions/checkout@v2
-
+ 
       - name: 'Terraform Init'
         run: |
-          cd Azure-terraform/1Pub-3Prvt-Vnet-Multi
           terraform init
-
+ 
       - name: 'Terraform Validate'
         run: |
-          cd Azure-terraform/1Pub-3Prvt-Vnet-Multi
           terraform validate
-
+ 
       - name: 'Terraform Plan'
         run: |
-          cd Azure-terraform/1Pub-3Prvt-Vnet-Multi
           terraform plan \
             -var "EnvironmentLevel=${{ env.EnvironmentLevel }}" \
             -var "AzureSubscriptionAlias=${{ env.AzureSubscriptionAlias }}" \
             -var "VNetName=${{ env.VNetName }}" \
             -var "location=${{ env.location }}" \
             -var "resourcegroupname=${{ env.resourcegroupname }}"
-
-      - name: Terraform Apply
-        if: github.ref == 'refs/heads/main'
-        run: |
-          cd Azure-terraform/1Pub-3Prvt-Vnet-Multi
-          terraform apply -auto-approve \
-            -var "EnvironmentLevel=${{ env.EnvironmentLevel }}" \
-            -var "AzureSubscriptionAlias=${{ env.AzureSubscriptionAlias }}" \
-            -var "VNetName=${{ env.VNetName }}" \
-            -var "location=${{ env.location }}" \
-            -var "resourcegroupname=${{ env.resourcegroupname }}"
+ 
+#      - name: Terraform Apply
+#       if: github.ref == 'refs/heads/main'
+#        run: |
+#          terraform apply -auto-approve \
+#            -var "EnvironmentLevel=${{ env.EnvironmentLevel }}" \
+#            -var "AzureSubscriptionAlias=${{ env.AzureSubscriptionAlias }}" \
+#            -var "VNetName=${{ env.VNetName }}" \
+#            -var "location=${{ env.location }}" \
+#            -var "resourcegroupname=${{ env.resourcegroupname }}"
